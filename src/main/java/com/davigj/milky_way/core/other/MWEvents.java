@@ -29,8 +29,8 @@ public class MWEvents {
         Player player = event.getEntity();
         Entity target = event.getTarget();
 
-        handleMilkingEvent(player, target, event.getHand(), MWEntityTypeTags.BUCKET_MILKABLE, MilkyWay.BUCKET_TIMER, event, Items.BUCKET, MWConfig.COMMON.bucketTimer.get());
-        handleMilkingEvent(player, target, event.getHand(), MWEntityTypeTags.WORSE_BUCKET_MILKABLE, MilkyWay.WORSE_BUCKET_TIMER, event, Items.BUCKET, MWConfig.COMMON.worseBucketTimer.get());
+        handleBuckets(player, target, event.getHand(), MWEntityTypeTags.BUCKET_MILKABLE, MilkyWay.BUCKET_TIMER, event, MWConfig.COMMON.bucketTimer.get());
+        handleBuckets(player, target, event.getHand(), MWEntityTypeTags.WORSE_BUCKET_MILKABLE, MilkyWay.WORSE_BUCKET_TIMER, event, MWConfig.COMMON.worseBucketTimer.get());
         handleMilkingEvent(player, target, event.getHand(), MWEntityTypeTags.BOWL_MILKABLE, MilkyWay.BOWL_TIMER, event, Items.BOWL, MWConfig.COMMON.bowlTimer.get());
         handleMilkingEvent(player, target, event.getHand(), MWEntityTypeTags.BOTTLE_MILKABLE, MilkyWay.BOTTLE_TIMER, event, Items.GLASS_BOTTLE, MWConfig.COMMON.bottleTimer.get());
 
@@ -38,7 +38,7 @@ public class MWEvents {
         target.save(entityData);
         if (ModList.get().isLoaded("cobblemon") && entityData.contains("Pokemon") && entityData.getCompound("Pokemon").contains("milkable")) {
             if (entityData.getCompound("Pokemon").getBoolean("milkable")) {
-                if (player.getItemInHand(event.getHand()).getItem().equals(Items.BUCKET)) {
+                if (player.getItemInHand(event.getHand()).is(MWItemTags.BUCKETS)) {
                     if (manager.getValue(target, MilkyWay.BUCKET_TIMER) == 0) {
                         manager.setValue(target, MilkyWay.BUCKET_TIMER, MWConfig.COMMON.bucketTimer.get() * 20);
                     } else {
@@ -57,6 +57,23 @@ public class MWEvents {
     private static void handleMilkingEvent(Player player, Entity target, InteractionHand hand, TagKey<EntityType<?>> entityTag,
                                            TrackedData<Integer> timerValue, PlayerInteractEvent.EntityInteract event, Item item, int timer) {
         if (player.getItemInHand(hand).getItem().equals(item) &&
+                target.getType().is(entityTag)) {
+            if (manager.getValue(target, timerValue) == 0) {
+                manager.setValue(target, timerValue, timer * 20);
+            } else {
+                event.setCanceled(true);
+                player.swing(event.getHand());
+                if (MWConfig.COMMON.angryParticle.get()) {
+                    target.level.addParticle(ParticleTypes.ANGRY_VILLAGER, target.getX(), target.getEyeY(), target.getZ(),
+                            10, 3, 10);
+                }
+            }
+        }
+    }
+
+    private static void handleBuckets(Player player, Entity target, InteractionHand hand, TagKey<EntityType<?>> entityTag,
+                                      TrackedData<Integer> timerValue, PlayerInteractEvent.EntityInteract event, int timer) {
+        if (player.getItemInHand(hand).is(MWItemTags.BUCKETS) &&
                 target.getType().is(entityTag)) {
             if (manager.getValue(target, timerValue) == 0) {
                 manager.setValue(target, timerValue, timer * 20);
