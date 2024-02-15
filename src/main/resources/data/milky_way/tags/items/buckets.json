@@ -1,11 +1,10 @@
 {
-  "replace": false,
   "values": [
     "minecraft:bucket",
     {
       "id": "caverns_and_chasms:golden_bucket",
       "required": false
-    }
+    },
     {
       "id": "caverns_and_chasms:golden_milk_bucket",
       "required": false
