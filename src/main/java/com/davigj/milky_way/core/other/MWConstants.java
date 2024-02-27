@@ -7,6 +7,7 @@ public class MWConstants {
     public static final String ENVIRONMENTAL = "environmental";
     public static final String MINECRAFT = "minecraft";
     public static final String GOATED = "goated";
+    public static final String COBBLEMON = "cobblemon";
 
     public static final ResourceLocation YAK = new ResourceLocation(ENVIRONMENTAL, "yak");
     public static final ResourceLocation MOOBLOOM = new ResourceLocation(BUZZIER_BEES, "moobloom");
@@ -21,4 +22,5 @@ public class MWConstants {
     public static final ResourceLocation SQUID = new ResourceLocation(MINECRAFT, "squid");
     public static final ResourceLocation GLOW_SQUID = new ResourceLocation(MINECRAFT, "glow_squid");
     public static final ResourceLocation GEEP = new ResourceLocation(GOATED, "geep");
+    public static final ResourceLocation POKEMON = new ResourceLocation(COBBLEMON, "pokemon");
 }

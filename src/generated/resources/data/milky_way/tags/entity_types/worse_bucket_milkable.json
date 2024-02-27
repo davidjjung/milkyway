@@ -13,34 +13,6 @@
       "required": false
     },
     {
-      "id": "minecraft:sheep",
-      "required": false
-    },
-    {
-      "id": "minecraft:squid",
-      "required": false
-    },
-    {
-      "id": "minecraft:donkey",
-      "required": false
-    },
-    {
-      "id": "minecraft:llama",
-      "required": false
-    },
-    {
-      "id": "minecraft:pig",
-      "required": false
-    },
-    {
-      "id": "minecraft:horse",
-      "required": false
-    },
-    {
-      "id": "minecraft:mule",
-      "required": false
-    },
-    {
       "id": "goated:geep",
       "required": false
     }

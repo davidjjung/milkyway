@@ -34,19 +34,23 @@ public class MWEvents {
         handleMilkingEvent(player, target, event.getHand(), MWEntityTypeTags.BOWL_MILKABLE, MilkyWay.BOWL_TIMER, event, Items.BOWL, MWConfig.COMMON.bowlTimer.get());
         handleMilkingEvent(player, target, event.getHand(), MWEntityTypeTags.BOTTLE_MILKABLE, MilkyWay.BOTTLE_TIMER, event, Items.GLASS_BOTTLE, MWConfig.COMMON.bottleTimer.get());
 
-        CompoundTag entityData = new CompoundTag();
-        target.save(entityData);
-        if (ModList.get().isLoaded("cobblemon") && entityData.contains("Pokemon") && entityData.getCompound("Pokemon").contains("milkable")) {
-            if (entityData.getCompound("Pokemon").getBoolean("milkable")) {
-                if (player.getItemInHand(event.getHand()).is(MWItemTags.BUCKETS)) {
-                    if (manager.getValue(target, MilkyWay.BUCKET_TIMER) == 0) {
-                        manager.setValue(target, MilkyWay.BUCKET_TIMER, MWConfig.COMMON.bucketTimer.get() * 20);
-                    } else {
-                        event.setCanceled(true);
-                        player.swing(event.getHand());
-                        if (MWConfig.COMMON.angryParticle.get()) {
-                            target.level.addParticle(ParticleTypes.ANGRY_VILLAGER, target.getX(), target.getEyeY() + 0.1, target.getZ(),
-                                    10, 3, 10);
+        if (!target.getType().is(MWEntityTypeTags.POKEMON)) {return;}
+
+        if (ModList.get().isLoaded("cobblemon")) {
+            CompoundTag entityData = new CompoundTag();
+            target.save(entityData);
+            if (entityData.contains("Pokemon") && entityData.getCompound("Pokemon").contains("milkable")) {
+                if (entityData.getCompound("Pokemon").getBoolean("milkable")) {
+                    if (player.getItemInHand(event.getHand()).is(MWItemTags.BUCKETS)) {
+                        if (manager.getValue(target, MilkyWay.BUCKET_TIMER) == 0) {
+                            manager.setValue(target, MilkyWay.BUCKET_TIMER, MWConfig.COMMON.bucketTimer.get() * 20);
+                        } else {
+                            event.setCanceled(true);
+                            player.swing(event.getHand());
+                            if (MWConfig.COMMON.angryParticle.get()) {
+                                target.level.addParticle(ParticleTypes.ANGRY_VILLAGER, target.getX(), target.getEyeY() + 0.1, target.getZ(),
+                                        10, 3, 10);
+                            }
                         }
                     }
                 }
@@ -98,13 +102,17 @@ public class MWEvents {
         handleMilkTick(target, MWEntityTypeTags.BOWL_MILKABLE, MilkyWay.BOWL_TIMER);
         handleMilkTick(target, MWEntityTypeTags.BOTTLE_MILKABLE, MilkyWay.BOTTLE_TIMER);
 
-        CompoundTag entityData = new CompoundTag();
-        target.save(entityData);
-        if (ModList.get().isLoaded("cobblemon") && entityData.contains("Pokemon") && entityData.getCompound("Pokemon").contains("milkable")) {
-            if (entityData.getCompound("Pokemon").getBoolean("milkable")) {
-                int timer = manager.getValue(target, MilkyWay.BUCKET_TIMER);
-                if (timer > 0) {
-                    manager.setValue(target, MilkyWay.BUCKET_TIMER, timer - 1);
+        if (!target.getType().is(MWEntityTypeTags.POKEMON)) {return;}
+
+        if (ModList.get().isLoaded("cobblemon")) {
+            CompoundTag entityData = new CompoundTag();
+            target.save(entityData);
+            if (entityData.contains("Pokemon") && entityData.getCompound("Pokemon").contains("milkable")) {
+                if (entityData.getCompound("Pokemon").getBoolean("milkable")) {
+                    int timer = manager.getValue(target, MilkyWay.BUCKET_TIMER);
+                    if (timer > 0) {
+                        manager.setValue(target, MilkyWay.BUCKET_TIMER, timer - 1);
+                    }
                 }
             }
         }

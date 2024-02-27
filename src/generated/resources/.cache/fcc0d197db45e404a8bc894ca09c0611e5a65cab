@@ -1,5 +1,6 @@
-// 1.19.2	2023-12-17T17:48:07.1967203	Tags for minecraft:entity_type
+// 1.19.2	2024-02-27T08:36:49.0737638	Tags for minecraft:entity_type
 40e1bfa90d4b370ebdfaabb6a7533254caa670cf data/milky_way/tags/entity_types/bottle_milkable.json
 68fbaa1c8405ddd5b5d56545d4b7d45867026bb2 data/milky_way/tags/entity_types/bowl_milkable.json
 40e1bfa90d4b370ebdfaabb6a7533254caa670cf data/milky_way/tags/entity_types/bucket_milkable.json
-00e589ae90e159de0579fddcaae8a2e279ab54a1 data/milky_way/tags/entity_types/worse_bucket_milkable.json
+b3de58c2e7471803772742c242748856febf235f data/milky_way/tags/entity_types/pokemon.json
+c0b2017e252401bb7c710b2fee52e30de3afe6e6 data/milky_way/tags/entity_types/worse_bucket_milkable.json
