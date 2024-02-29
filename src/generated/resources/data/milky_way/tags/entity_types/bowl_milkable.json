@@ -1,8 +1,5 @@
 {
   "values": [
-    {
-      "id": "minecraft:mooshroom",
-      "required": false
-    }
+    "minecraft:mooshroom"
   ]
 }

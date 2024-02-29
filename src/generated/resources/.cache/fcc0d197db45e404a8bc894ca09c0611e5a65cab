@@ -1,6 +1,6 @@
-// 1.19.2	2024-02-29T13:36:13.9343355	Tags for minecraft:entity_type
-40e1bfa90d4b370ebdfaabb6a7533254caa670cf data/milky_way/tags/entity_types/bottle_milkable.json
-68fbaa1c8405ddd5b5d56545d4b7d45867026bb2 data/milky_way/tags/entity_types/bowl_milkable.json
-40e1bfa90d4b370ebdfaabb6a7533254caa670cf data/milky_way/tags/entity_types/bucket_milkable.json
+// 1.19.2	2024-02-29T14:15:47.8263064	Tags for minecraft:entity_type
+dd79f519e750876b485633e3e26baefd29fa6ccf data/milky_way/tags/entity_types/bottle_milkable.json
+1ef430c55d1de22917fabe28a7b13acd1ccbc2cc data/milky_way/tags/entity_types/bowl_milkable.json
+dd79f519e750876b485633e3e26baefd29fa6ccf data/milky_way/tags/entity_types/bucket_milkable.json
 b3de58c2e7471803772742c242748856febf235f data/milky_way/tags/entity_types/pokemon.json
-ff7e9e2c32ee2678082257d19d56537aba3610bf data/milky_way/tags/entity_types/worse_bucket_milkable.json
+fc6bbc8354920a616a124f5cfba5695447066a27 data/milky_way/tags/entity_types/worse_bucket_milkable.json
