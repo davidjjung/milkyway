@@ -11,7 +11,7 @@ itemIcon = "minecraft:milk_bucket"
 configBackground = "minecraft:textures/block/dirt.png"
 authors = "DavigJ"
 credits = "DavigJ"
-displayURL = "https://github.com/davidjjung/milkyway"
+displayURL = "https://modrinth.com/mod/milky-way"
 displayName = "Milky Way"
 description = '''
     Milking mobs with a configurable cooldown.
