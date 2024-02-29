@@ -11,6 +11,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -49,11 +50,17 @@ public class MWEvents {
                         if (manager.getValue(target, MilkyWay.BUCKET_TIMER) == 0) {
                             manager.setValue(target, MilkyWay.BUCKET_TIMER, MWConfig.COMMON.bucketTimer.get() * 20);
                         } else {
-                            event.setCanceled(true);
-                            player.swing(event.getHand());
-                            if (MWConfig.COMMON.angryParticle.get()) {
-                                target.level.addParticle(ParticleTypes.ANGRY_VILLAGER, target.getX(), target.getEyeY() + 0.1, target.getZ(),
-                                        10, 3, 10);
+                            if (manager.getValue(target, MilkyWay.MILK_ATTEMPT_TIMER) == 0) {
+                                event.setCanceled(true);
+                                player.swing(event.getHand());
+                                if (MWConfig.COMMON.angryParticle.get()) {
+                                    target.level.addParticle(ParticleTypes.ANGRY_VILLAGER, target.getX(), target.getEyeY() + 0.1, target.getZ(),
+                                            10, 3, 10);
+                                    if (target instanceof Mob mob) {
+                                        mob.playAmbientSound();
+                                    }
+                                }
+                                manager.setValue(target, MilkyWay.MILK_ATTEMPT_TIMER, 50);
                             }
                         }
                     }
@@ -70,10 +77,16 @@ public class MWEvents {
                 manager.setValue(target, timerValue, timer * 20);
             } else {
                 event.setCanceled(true);
-                player.swing(event.getHand());
-                if (MWConfig.COMMON.angryParticle.get()) {
-                    target.level.addParticle(ParticleTypes.ANGRY_VILLAGER, target.getX(), target.getEyeY(), target.getZ(),
-                            10, 3, 10);
+                if (manager.getValue(target, MilkyWay.MILK_ATTEMPT_TIMER) == 0) {
+                    player.swing(event.getHand());
+                    if (MWConfig.COMMON.angryParticle.get()) {
+                        target.level.addParticle(ParticleTypes.ANGRY_VILLAGER, target.getX(), target.getEyeY(), target.getZ(),
+                                10, 3, 10);
+                        if (target instanceof Mob mob) {
+                            mob.playAmbientSound();
+                        }
+                    }
+                    manager.setValue(target, MilkyWay.MILK_ATTEMPT_TIMER, 50);
                 }
             }
         }
@@ -87,10 +100,16 @@ public class MWEvents {
                 manager.setValue(target, timerValue, timer * 20);
             } else {
                 event.setCanceled(true);
-                player.swing(event.getHand());
-                if (MWConfig.COMMON.angryParticle.get()) {
-                    target.level.addParticle(ParticleTypes.ANGRY_VILLAGER, target.getX(), target.getEyeY(), target.getZ(),
-                            10, 3, 10);
+                if (manager.getValue(target, MilkyWay.MILK_ATTEMPT_TIMER) == 0) {
+                    player.swing(event.getHand());
+                    if (MWConfig.COMMON.angryParticle.get()) {
+                        target.level.addParticle(ParticleTypes.ANGRY_VILLAGER, target.getX(), target.getEyeY(), target.getZ(),
+                                10, 3, 10);
+                        if (target instanceof Mob mob) {
+                            mob.playAmbientSound();
+                        }
+                    }
+                    manager.setValue(target, MilkyWay.MILK_ATTEMPT_TIMER, 50);
                 }
             }
         }
@@ -117,6 +136,10 @@ public class MWEvents {
                     if (timer > 0) {
                         manager.setValue(target, MilkyWay.BUCKET_TIMER, timer - 1);
                     }
+                    int milkAttemptTimer = manager.getValue(target, MilkyWay.MILK_ATTEMPT_TIMER);
+                    if (milkAttemptTimer > 0) {
+                        manager.setValue(target, MilkyWay.MILK_ATTEMPT_TIMER, milkAttemptTimer - 1);
+                    }
                 }
             }
         }
@@ -127,6 +150,10 @@ public class MWEvents {
             int timer = manager.getValue(target, timerValue);
             if (timer > 0) {
                 manager.setValue(target, timerValue, timer - 1);
+            }
+            int milkAttemptTimer = manager.getValue(target, MilkyWay.MILK_ATTEMPT_TIMER);
+            if (milkAttemptTimer > 0) {
+                manager.setValue(target, MilkyWay.MILK_ATTEMPT_TIMER, milkAttemptTimer - 1);
             }
         }
     }

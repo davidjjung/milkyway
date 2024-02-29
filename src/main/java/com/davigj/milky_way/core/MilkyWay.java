@@ -28,6 +28,8 @@ public class MilkyWay {
     public static final TrackedData<Integer> BOWL_TIMER = TrackedData.Builder.create(DataProcessors.INT, () -> 0).enableSaving().enablePersistence().build();
     public static final TrackedData<Integer> BOTTLE_TIMER = TrackedData.Builder.create(DataProcessors.INT, () -> 0).enableSaving().enablePersistence().build();
 
+    public static final TrackedData<Integer> MILK_ATTEMPT_TIMER = TrackedData.Builder.create(DataProcessors.INT, () -> 0).enableSaving().enablePersistence().build();
+
     public MilkyWay() {
         IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
         ModLoadingContext context = ModLoadingContext.get();
@@ -44,6 +46,7 @@ public class MilkyWay {
         TrackedDataManager.INSTANCE.registerData(new ResourceLocation(MOD_ID, "worse_bucket_timer"), WORSE_BUCKET_TIMER);
         TrackedDataManager.INSTANCE.registerData(new ResourceLocation(MOD_ID, "bowl_timer"), BOWL_TIMER);
         TrackedDataManager.INSTANCE.registerData(new ResourceLocation(MOD_ID, "bottle_timer"), BOTTLE_TIMER);
+        TrackedDataManager.INSTANCE.registerData(new ResourceLocation(MOD_ID, "milk_attempt_timer"), MILK_ATTEMPT_TIMER);
     }
 
     private void commonSetup(FMLCommonSetupEvent event) {
