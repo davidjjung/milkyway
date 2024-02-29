@@ -20,7 +20,7 @@ public class MWEntityTypeTagsProvider extends EntityTypeTagsProvider {
         this.tag(MWEntityTypeTags.WORSE_BUCKET_MILKABLE).addOptional(MWConstants.YAK).addOptional(MWConstants.MOOBLOOM)
                 .add(EntityType.MOOSHROOM).addOptional(MWConstants.GEEP).add(EntityType.GOAT);
         this.tag(MWEntityTypeTags.BOWL_MILKABLE).add(EntityType.MOOSHROOM);
-        this.tag(MWEntityTypeTags.BOTTLE_MILKABLE).add(EntityType.COW);
+//        this.tag(MWEntityTypeTags.BOTTLE_MILKABLE).add(EntityType.COW);
 
         this.tag(MWEntityTypeTags.POKEMON).addOptional(MWConstants.POKEMON);
     }
