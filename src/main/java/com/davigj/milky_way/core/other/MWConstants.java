@@ -4,6 +4,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public class MWConstants {
     public static final String BUZZIER_BEES = "buzzier_bees";
+    public static final String CAVERNS_AND_CHASMS = "caverns_and_chasms";
     public static final String ENVIRONMENTAL = "environmental";
     public static final String GOATED = "goated";
     public static final String COBBLEMON = "cobblemon";

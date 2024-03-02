@@ -2,6 +2,10 @@
   "values": [
     "minecraft:bucket",
     {
+      "id": "windswept:wooden_bucket",
+      "required": false
+    },
+    {
       "id": "caverns_and_chasms:golden_bucket",
       "required": false
     },
