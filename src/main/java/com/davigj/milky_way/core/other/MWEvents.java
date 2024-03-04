@@ -52,8 +52,8 @@ public class MWEvents {
                         if (manager.getValue(target, MilkyWay.BUCKET_TIMER) == 0) {
                             manager.setValue(target, MilkyWay.BUCKET_TIMER, MWConfig.COMMON.bucketTimer.get() * 20);
                         } else {
+                            event.setCanceled(true);
                             if (manager.getValue(target, MilkyWay.MILK_ATTEMPT_TIMER) <= 3) {
-                                event.setCanceled(true);
                                 player.swing(event.getHand());
                                 if (MWConfig.COMMON.angryParticle.get()) {
                                     target.level.addParticle(ParticleTypes.ANGRY_VILLAGER, target.getX(), target.getEyeY() + 0.1, target.getZ(),
