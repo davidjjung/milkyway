@@ -4,9 +4,9 @@ import com.davigj.milky_way.core.MWConfig;
 import com.davigj.milky_way.core.MilkyWay;
 import com.teamabnormals.blueprint.common.world.storage.tracking.TrackedData;
 import com.teamabnormals.blueprint.common.world.storage.tracking.TrackedDataManager;
-import com.teamabnormals.caverns_and_chasms.core.registry.CCItems;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
@@ -23,6 +23,9 @@ import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.registries.ForgeRegistries;
+
+import java.util.function.Supplier;
 
 @Mod.EventBusSubscriber(modid = MilkyWay.MOD_ID)
 public class MWEvents {
@@ -52,11 +55,11 @@ public class MWEvents {
                         if (manager.getValue(target, MilkyWay.BUCKET_TIMER) == 0) {
                             manager.setValue(target, MilkyWay.BUCKET_TIMER, MWConfig.COMMON.bucketTimer.get() * 20);
                         } else {
+                            event.setCanceled(true);
                             if (manager.getValue(target, MilkyWay.MILK_ATTEMPT_TIMER) <= 3) {
-                                event.setCanceled(true);
                                 player.swing(event.getHand());
                                 if (MWConfig.COMMON.angryParticle.get()) {
-                                    target.level.addParticle(ParticleTypes.ANGRY_VILLAGER, target.getX(), target.getEyeY() + 0.1, target.getZ(),
+                                    target.level().addParticle(ParticleTypes.ANGRY_VILLAGER, target.getX(), target.getEyeY() + 0.1, target.getZ(),
                                             10, 3, 10);
                                     if (target instanceof Mob mob) {
                                         mob.playAmbientSound();
@@ -82,7 +85,7 @@ public class MWEvents {
                 if (manager.getValue(target, MilkyWay.MILK_ATTEMPT_TIMER) <= 3) {
                     player.swing(event.getHand());
                     if (MWConfig.COMMON.angryParticle.get()) {
-                        target.level.addParticle(ParticleTypes.ANGRY_VILLAGER, target.getX(), target.getEyeY(), target.getZ(),
+                        target.level().addParticle(ParticleTypes.ANGRY_VILLAGER, target.getX(), target.getEyeY(), target.getZ(),
                                 10, 3, 10);
                         if (target instanceof Mob mob) {
                             mob.playAmbientSound();
@@ -105,7 +108,7 @@ public class MWEvents {
                 if (manager.getValue(target, MilkyWay.MILK_ATTEMPT_TIMER) <= 3) {
                     player.swing(event.getHand());
                     if (MWConfig.COMMON.angryParticle.get()) {
-                        target.level.addParticle(ParticleTypes.ANGRY_VILLAGER, target.getX(), target.getEyeY(), target.getZ(),
+                        target.level().addParticle(ParticleTypes.ANGRY_VILLAGER, target.getX(), target.getEyeY(), target.getZ(),
                                 10, 3, 10);
                         if (target instanceof Mob mob) {
                             mob.playAmbientSound();
@@ -169,10 +172,15 @@ public class MWEvents {
             Entity target = event.getTarget();
             if (target instanceof LivingEntity living && living.isBaby()) {return;}
             ItemStack stack = player.getItemInHand(event.getHand());
-            if (stack.is(CCItems.GOLDEN_BUCKET.get()) || stack.is(CCItems.GOLDEN_MILK_BUCKET.get())) {
+            if (stack.is(getCompatItem(MWConstants.CAVERNS_AND_CHASMS, MWConstants.GOLDEN_BUCKET).get())
+                    || stack.is(getCompatItem(MWConstants.CAVERNS_AND_CHASMS, MWConstants.GOLDEN_MILK_BUCKET).get())) {
                 handleBuckets(player, target, event.getHand(), MWEntityTypeTags.BUCKET_MILKABLE, MilkyWay.BUCKET_TIMER, event, MWConfig.COMMON.bucketTimer.get());
                 handleBuckets(player, target, event.getHand(), MWEntityTypeTags.WORSE_BUCKET_MILKABLE, MilkyWay.WORSE_BUCKET_TIMER, event, MWConfig.COMMON.worseBucketTimer.get());
             }
         }
+    }
+
+    private static Supplier<Item> getCompatItem(String modid, ResourceLocation item) {
+        return (ModList.get().isLoaded(modid) ? () -> ForgeRegistries.ITEMS.getValue(item) : () -> null);
     }
 }

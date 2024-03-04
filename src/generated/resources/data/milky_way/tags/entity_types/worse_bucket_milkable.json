@@ -1,5 +1,7 @@
 {
   "values": [
+    "minecraft:mooshroom",
+    "minecraft:goat",
     {
       "id": "environmental:yak",
       "required": false
@@ -8,11 +10,9 @@
       "id": "buzzier_bees:moobloom",
       "required": false
     },
-    "minecraft:mooshroom",
     {
       "id": "goated:geep",
       "required": false
-    },
-    "minecraft:goat"
+    }
   ]
 }

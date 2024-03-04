@@ -13,4 +13,7 @@ public class MWConstants {
     public static final ResourceLocation MOOBLOOM = new ResourceLocation(BUZZIER_BEES, "moobloom");
     public static final ResourceLocation GEEP = new ResourceLocation(GOATED, "geep");
     public static final ResourceLocation POKEMON = new ResourceLocation(COBBLEMON, "pokemon");
+
+    public static final ResourceLocation GOLDEN_BUCKET = new ResourceLocation(CAVERNS_AND_CHASMS, "golden_bucket");
+    public static final ResourceLocation GOLDEN_MILK_BUCKET = new ResourceLocation(CAVERNS_AND_CHASMS, "golden_milk_bucket");
 }

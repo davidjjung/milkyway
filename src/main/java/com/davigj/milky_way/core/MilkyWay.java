@@ -5,7 +5,9 @@ import com.teamabnormals.blueprint.common.world.storage.tracking.DataProcessors;
 import com.teamabnormals.blueprint.common.world.storage.tracking.TrackedData;
 import com.teamabnormals.blueprint.common.world.storage.tracking.TrackedDataManager;
 import com.teamabnormals.blueprint.core.util.registry.RegistryHelper;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.data.ExistingFileHelper;
@@ -17,6 +19,8 @@ import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+
+import java.util.concurrent.CompletableFuture;
 
 @Mod(MilkyWay.MOD_ID)
 public class MilkyWay {
@@ -63,9 +67,11 @@ public class MilkyWay {
 
     private void dataSetup(GatherDataEvent event) {
         DataGenerator generator = event.getGenerator();
+        PackOutput packOutput = generator.getPackOutput();
         ExistingFileHelper helper = event.getExistingFileHelper();
         boolean includeServer = event.includeServer();
+        CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
 
-        generator.addProvider(includeServer, new MWEntityTypeTagsProvider(generator, helper));
+        generator.addProvider(includeServer, new MWEntityTypeTagsProvider(packOutput, lookupProvider, helper));
     }
 }
