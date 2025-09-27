@@ -1,0 +1,42 @@
+modLoader = "javafml"
+loaderVersion = "[1,)"
+issueTrackerURL = "https://github.com/davidjjung/milky_way/issues"
+license = "MIT License"
+
+[[mixins]]
+config = "milky_way.mixins.json"
+
+[[mods]]
+    modId = "milky_way"
+    version = "${mod_version}"
+    logoFile = "logo.png"
+    itemIcon = "minecraft:milk_bucket"
+    configBackground = "minecraft:textures/block/white_wool.png"
+    authors = "DavigJ"
+    credits = "DavigJ"
+    displayURL = "https://modrinth.com/project/milky-way"
+    displayName = "Milky Way"
+    description = '''
+    Milking mobs with a configurable cooldown.
+    '''
+
+[[dependencies.milky_way]]
+    modId = "minecraft"
+    type = "required"
+    versionRange = "[${mc_version}]"
+    ordering = "AFTER"
+    side = "BOTH"
+
+[[dependencies.milky_way]]
+    modId = "neoforge"
+    type = "required"
+    versionRange = "[${neoforge},)"
+    ordering = "AFTER"
+    side = "BOTH"
+
+[[dependencies.milky_way]]
+    modId = "blueprint"
+    type = "required"
+    versionRange = "[${blueprint},)"
+    ordering = "AFTER"
+    side = "BOTH"

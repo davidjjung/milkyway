@@ -1,0 +1,200 @@
+{
+  "replace": false,
+  "values": {
+    "minecraft:cow": {
+      "items": [
+        {
+          "item": "minecraft:bucket",
+          "seconds": 600
+        },
+        {
+          "item": "minecraft:glass_bottle",
+          "seconds": 200,
+          "mod_loaded": "neapolitan"
+        }
+      ]
+    },
+    "minecraft:goat": {
+      "items": [
+        {
+          "item": "minecraft:bucket",
+          "seconds": 600
+        },
+        {
+          "item": "minecraft:glass_bottle",
+          "seconds": 200,
+          "mod_loaded": "neapolitan"
+        }
+      ]
+    },
+    "minecraft:mooshroom": {
+      "items": [
+        {
+          "item": "minecraft:bucket",
+          "seconds": 1200
+        },
+        {
+          "item": "minecraft:bowl",
+          "seconds": 600
+        },
+        {
+          "item": "minecraft:glass_bottle",
+          "seconds": 400,
+          "mod_loaded": "neapolitan"
+        }
+      ]
+    },
+    "environmental:yak": {
+      "items": [
+        {
+          "item": "minecraft:bucket",
+          "seconds": 1200
+        },
+        {
+          "item": "minecraft:glass_bottle",
+          "seconds": 400,
+          "mod_loaded": "neapolitan"
+        }
+      ]
+    },
+    "buzzier_bees:moobloom": {
+      "items": [
+        {
+          "item": "minecraft:bucket",
+          "seconds": 1200
+        },
+        {
+          "item": "minecraft:glass_bottle",
+          "seconds": 400,
+          "mod_loaded": "neapolitan"
+        }
+      ]
+    },
+    "goated:geep": {
+      "items": [
+        {
+          "item": "minecraft:bucket",
+          "seconds": 1200
+        },
+        {
+          "item": "minecraft:glass_bottle",
+          "seconds": 400,
+          "mod_loaded": "neapolitan"
+        }
+      ]
+    },
+    "minecraft:blaze": {
+      "items": [
+        {
+          "item": "minecraft:bucket",
+          "seconds": 600,
+          "mod_loaded": "milkable_blazes"
+        }
+      ]
+    },
+    "minecraft:sheep": {
+      "items": [
+        {
+          "item": "minecraft:bucket",
+          "seconds": 1200,
+          "mod_loaded": "milkallthemobs"
+        }
+      ]
+    },
+    "minecraft:llama": {
+      "items": [
+        {
+          "item": "minecraft:bucket",
+          "seconds": 1200,
+          "mod_loaded": "milkallthemobs"
+        }
+      ]
+    },
+    "minecraft:pig": {
+      "items": [
+        {
+          "item": "minecraft:bucket",
+          "seconds": 1200,
+          "mod_loaded": "milkallthemobs"
+        }
+      ]
+    },
+    "minecraft:donkey": {
+      "items": [
+        {
+          "item": "minecraft:bucket",
+          "seconds": 1200,
+          "mod_loaded": "milkallthemobs"
+        }
+      ]
+    },
+    "minecraft:horse": {
+      "items": [
+        {
+          "item": "minecraft:bucket",
+          "seconds": 1200,
+          "mod_loaded": "milkallthemobs"
+        }
+      ]
+    },
+    "minecraft:mule": {
+      "items": [
+        {
+          "item": "minecraft:bucket",
+          "seconds": 1200,
+          "mod_loaded": "milkallthemobs"
+        }
+      ]
+    },
+    "minecraft:cave_spider": {
+      "items": [
+        {
+          "item": "minecraft:glass_bottle",
+          "seconds": 600,
+          "mod_loaded": "extractpoison"
+        }
+      ]
+    },
+    "minecraft:bee": {
+      "items": [
+        {
+          "item": "minecraft:glass_bottle",
+          "seconds": 1200,
+          "mod_loaded": "extractpoison"
+        }
+      ]
+    },
+    "minecraft:pufferfish": {
+      "items": [
+        {
+          "item": "minecraft:glass_bottle",
+          "seconds": 1200,
+          "mod_loaded": "extractpoison"
+        }
+      ]
+    },
+    "bovinesandbuttercups:moobloom": {
+      "items": [
+        {
+          "item": "minecraft:bucket",
+          "seconds": 1200,
+          "mod_loaded": "bovinesandbuttercups"
+        },
+        {
+          "item": "minecraft:bowl",
+          "seconds": 600,
+          "mod_loaded": "bovinesandbuttercups"
+        }
+      ]
+    },
+    "cobblemon:pokemon": {
+      "items": [
+        {
+          "item": "minecraft:bucket",
+          "seconds": 1200,
+          "mod_loaded": "cobblemon"
+        }
+      ]
+    }
+  }
+}

@@ -1,19 +1,10 @@
 package com.davigj.milky_way.core.other;
 
-import net.minecraft.resources.ResourceLocation;
+import com.cobblemon.mod.common.entity.pokemon.PokemonEntity;
+import net.minecraft.world.entity.Entity;
 
 public class MWConstants {
-    public static final String BUZZIER_BEES = "buzzier_bees";
-    public static final String CAVERNS_AND_CHASMS = "caverns_and_chasms";
-    public static final String ENVIRONMENTAL = "environmental";
-    public static final String GOATED = "goated";
-    public static final String COBBLEMON = "cobblemon";
-
-    public static final ResourceLocation YAK = new ResourceLocation(ENVIRONMENTAL, "yak");
-    public static final ResourceLocation MOOBLOOM = new ResourceLocation(BUZZIER_BEES, "moobloom");
-    public static final ResourceLocation GEEP = new ResourceLocation(GOATED, "geep");
-    public static final ResourceLocation POKEMON = new ResourceLocation(COBBLEMON, "pokemon");
-
-    public static final ResourceLocation GOLDEN_BUCKET = new ResourceLocation(CAVERNS_AND_CHASMS, "golden_bucket");
-    public static final ResourceLocation GOLDEN_MILK_BUCKET = new ResourceLocation(CAVERNS_AND_CHASMS, "golden_milk_bucket");
+    public static boolean isCobblemon(Entity entity) {
+        return entity instanceof PokemonEntity;
+    }
 }

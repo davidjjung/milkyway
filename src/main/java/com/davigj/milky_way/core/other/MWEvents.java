@@ -2,13 +2,15 @@ package com.davigj.milky_way.core.other;
 
 import com.davigj.milky_way.core.MWConfig;
 import com.davigj.milky_way.core.MilkyWay;
-import com.teamabnormals.blueprint.common.world.storage.tracking.TrackedData;
 import com.teamabnormals.blueprint.common.world.storage.tracking.TrackedDataManager;
+import net.minecraft.core.Holder;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.TagKey;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -16,171 +18,127 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraftforge.event.entity.living.LivingEvent;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.eventbus.api.EventPriority;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.ModList;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.bus.api.EventPriority;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.ModList;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
+import net.neoforged.neoforge.event.tick.EntityTickEvent;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-@Mod.EventBusSubscriber(modid = MilkyWay.MOD_ID)
+import static com.davigj.milky_way.core.other.MWDataMapUtil.MILK_DATA;
+
+@EventBusSubscriber(modid = MilkyWay.MOD_ID)
 public class MWEvents {
-    static TrackedDataManager manager = TrackedDataManager.INSTANCE;
-    static int coolDown = 20;
+    static final TrackedDataManager manager = TrackedDataManager.INSTANCE;
 
     @SubscribeEvent(priority = EventPriority.HIGH)
-    public static void onMilk(PlayerInteractEvent.EntityInteract event) {
-        Player player = event.getEntity();
+    public static void onMilkSpecific(PlayerInteractEvent.EntityInteractSpecific event) {
         Entity target = event.getTarget();
+        if (target instanceof LivingEntity living) {
+            tryMilkEntity(event.getEntity(), living, event.getHand(), result -> {
+                event.setCanceled(true);
+                event.setCancellationResult(result);
+            }, event);
+        }
+    }
 
-        if (target instanceof LivingEntity living && living.isBaby()) {return;}
+    private static void tryMilkEntity(Player player, LivingEntity target, InteractionHand hand,
+                                      Consumer<InteractionResult> result, PlayerInteractEvent.EntityInteractSpecific event) {
+        if (target.isBaby()) return;
 
-        handleBuckets(player, target, event.getHand(), MWEntityTypeTags.BUCKET_MILKABLE, MilkyWay.BUCKET_TIMER, event, MWConfig.COMMON.bucketTimer.get());
-        handleBuckets(player, target, event.getHand(), MWEntityTypeTags.WORSE_BUCKET_MILKABLE, MilkyWay.WORSE_BUCKET_TIMER, event, MWConfig.COMMON.worseBucketTimer.get());
-        handleMilkingEvent(player, target, event.getHand(), MWEntityTypeTags.BOWL_MILKABLE, MilkyWay.BOWL_TIMER, event, Items.BOWL, MWConfig.COMMON.bowlTimer.get());
-        handleMilkingEvent(player, target, event.getHand(), MWEntityTypeTags.BOTTLE_MILKABLE, MilkyWay.BOTTLE_TIMER, event, Items.GLASS_BOTTLE, MWConfig.COMMON.bottleTimer.get());
+        Holder<EntityType<?>> holder = target.getType().builtInRegistryHolder();
+        MWDataMapUtil.MilkData data = holder.getData(MILK_DATA);
+        if (data == null) return;
 
-        if (!target.getType().is(MWEntityTypeTags.POKEMON)) {return;}
+        for (MWDataMapUtil.MilkData.ItemData itemData : data.items()) {
+            if (ModList.get().isLoaded("cobblemon") && !player.level().isClientSide) {
+                if (MWConstants.isCobblemon(target)) {
+                    CompoundTag entityData = new CompoundTag();
+                    target.save(entityData);
 
-        if (ModList.get().isLoaded(MWConstants.COBBLEMON)) {
-            CompoundTag entityData = new CompoundTag();
-            target.save(entityData);
-            if (entityData.contains("Pokemon") && entityData.getCompound("Pokemon").contains("milkable")) {
-                if (entityData.getCompound("Pokemon").getBoolean("milkable")) {
-                    if (player.getItemInHand(event.getHand()).is(MWItemTags.BUCKETS)) {
-                        if (manager.getValue(target, MilkyWay.BUCKET_TIMER) == 0) {
-                            manager.setValue(target, MilkyWay.BUCKET_TIMER, MWConfig.COMMON.bucketTimer.get() * 20);
-                        } else {
-                            event.setCanceled(true);
-                            if (manager.getValue(target, MilkyWay.MILK_ATTEMPT_TIMER) <= 3) {
-                                player.swing(event.getHand());
-                                if (MWConfig.COMMON.angryParticle.get()) {
-                                    target.level().addParticle(ParticleTypes.ANGRY_VILLAGER, target.getX(), target.getEyeY() + 0.1, target.getZ(),
-                                            10, 3, 10);
-                                    if (target instanceof Mob mob) {
-                                        mob.playAmbientSound();
-                                    }
-                                }
-                                manager.setValue(target, MilkyWay.MILK_ATTEMPT_TIMER, coolDown);
+                    if (!entityData.contains("Pokemon")) break;
+
+                    ListTag features = entityData.getCompound("Pokemon").getList("Features", 10);
+                    boolean isMilkable = false;
+                    for (int i = 0; i < features.size(); i++) {
+                        CompoundTag feature = features.getCompound(i);
+                        if (feature.contains("cobblemon:feature_id") && feature.getString("cobblemon:feature_id").equals("milkable")) {
+                            if (feature.getBoolean("milkable")) {
+                                isMilkable = true;
                             }
                         }
                     }
+                    if (!isMilkable) break;
                 }
             }
-        }
-    }
 
-    private static void handleMilkingEvent(Player player, Entity target, InteractionHand hand, TagKey<EntityType<?>> entityTag,
-                                           TrackedData<Integer> timerValue, PlayerInteractEvent.EntityInteract event, Item item, int timer) {
-        if (player.getItemInHand(hand).getItem().equals(item) &&
-                target.getType().is(entityTag)) {
-            if (manager.getValue(target, timerValue) == 0) {
-                manager.setValue(target, timerValue, timer * 20);
-            } else {
-                event.setCanceled(true);
-                if (manager.getValue(target, MilkyWay.MILK_ATTEMPT_TIMER) <= 3) {
-                    player.swing(event.getHand());
-                    if (MWConfig.COMMON.angryParticle.get()) {
-                        target.level().addParticle(ParticleTypes.ANGRY_VILLAGER, target.getX(), target.getEyeY(), target.getZ(),
-                                10, 3, 10);
-                        if (target instanceof Mob mob) {
-                            mob.playAmbientSound();
-                        }
+            if (!ModList.get().isLoaded(itemData.modLoaded())) continue;
+
+            ItemStack held = player.getItemInHand(hand);
+            if (!held.is(getCompatItem(itemData.item()).get())) continue;
+
+            byte substance = itemData.substanceIndex();
+            int milkTime = parseMilkTimers(target, substance);
+
+            if (milkTime > 0) {
+                if (!player.getCooldowns().isOnCooldown(held.getItem())) {
+                    player.getCooldowns().addCooldown(held.getItem(), 20);
+                    player.swing(hand);
+                    if (MWConfig.CLIENT.angryParticle.get()) {
+                        target.level().addParticle(ParticleTypes.ANGRY_VILLAGER, target.getX(), target.getEyeY(), target.getZ(), 0, 0, 0);
                     }
-                    manager.setValue(target, MilkyWay.MILK_ATTEMPT_TIMER, coolDown);
-                }
-            }
-        }
-    }
-
-    private static void handleBuckets(Player player, Entity target, InteractionHand hand, TagKey<EntityType<?>> entityTag,
-                                      TrackedData<Integer> timerValue, PlayerInteractEvent event, int timer) {
-        if (player.getItemInHand(hand).is(MWItemTags.BUCKETS) &&
-                target.getType().is(entityTag)) {
-            if (manager.getValue(target, timerValue) == 0) {
-                manager.setValue(target, timerValue, timer * 20);
-            } else {
-                event.setCanceled(true);
-                if (manager.getValue(target, MilkyWay.MILK_ATTEMPT_TIMER) <= 3) {
-                    player.swing(event.getHand());
-                    if (MWConfig.COMMON.angryParticle.get()) {
-                        target.level().addParticle(ParticleTypes.ANGRY_VILLAGER, target.getX(), target.getEyeY(), target.getZ(),
-                                10, 3, 10);
-                        if (target instanceof Mob mob) {
-                            mob.playAmbientSound();
-                        }
-
+                    if (target instanceof Mob mob) {
+                        mob.playAmbientSound();
                     }
-                    manager.setValue(target, MilkyWay.MILK_ATTEMPT_TIMER, coolDown);
                 }
+                result.accept(InteractionResult.CONSUME);
+            } else {
+                setMilkTimers(target, substance, itemData.seconds() * 20);
             }
+            break;
         }
     }
-
 
     @SubscribeEvent
-    public static void entityTick(LivingEvent.LivingTickEvent event) {
-        Entity target = event.getEntity();
+    public static void entityTick(EntityTickEvent.Post event) {
+        Entity entity = event.getEntity();
+        Map<Byte, Integer> timers = new HashMap<>(manager.getValue(entity, MilkyWay.MILK_TIMERS));
 
-        handleMilkTick(target, MWEntityTypeTags.BUCKET_MILKABLE, MilkyWay.BUCKET_TIMER);
-        handleMilkTick(target, MWEntityTypeTags.WORSE_BUCKET_MILKABLE, MilkyWay.WORSE_BUCKET_TIMER);
-        handleMilkTick(target, MWEntityTypeTags.BOWL_MILKABLE, MilkyWay.BOWL_TIMER);
-        handleMilkTick(target, MWEntityTypeTags.BOTTLE_MILKABLE, MilkyWay.BOTTLE_TIMER);
-
-        if (!target.getType().is(MWEntityTypeTags.POKEMON)) {return;}
-
-        if (ModList.get().isLoaded(MWConstants.COBBLEMON)) {
-            CompoundTag entityData = new CompoundTag();
-            target.save(entityData);
-            if (entityData.contains("Pokemon") && entityData.getCompound("Pokemon").contains("milkable")) {
-                if (entityData.getCompound("Pokemon").getBoolean("milkable")) {
-                    int timer = manager.getValue(target, MilkyWay.BUCKET_TIMER);
-                    if (timer > 0) {
-                        manager.setValue(target, MilkyWay.BUCKET_TIMER, timer - 1);
-                    }
-                    int milkAttemptTimer = manager.getValue(target, MilkyWay.MILK_ATTEMPT_TIMER);
-                    if (milkAttemptTimer > 0) {
-                        manager.setValue(target, MilkyWay.MILK_ATTEMPT_TIMER, milkAttemptTimer - 1);
-                    }
-                }
+        boolean changed = false;
+        for (Map.Entry<Byte, Integer> entry : timers.entrySet()) {
+            int remaining = entry.getValue();
+            if (remaining > 0) {
+                timers.put(entry.getKey(), remaining - 1);
+                changed = true;
             }
+        }
+
+        if (changed) {
+            manager.setValue(entity, MilkyWay.MILK_TIMERS, timers);
         }
     }
 
-    private static void handleMilkTick(Entity target, TagKey<EntityType<?>> entityTag, TrackedData<Integer> timerValue) {
-        if (target.getType().is(entityTag)) {
-            int timer = manager.getValue(target, timerValue);
-            if (timer > 0) {
-                manager.setValue(target, timerValue, timer - 1);
-            }
-            int milkAttemptTimer = manager.getValue(target, MilkyWay.MILK_ATTEMPT_TIMER);
-            if (milkAttemptTimer > 0) {
-                manager.setValue(target, MilkyWay.MILK_ATTEMPT_TIMER, milkAttemptTimer - 1);
-            }
-        }
+    private static int parseMilkTimers(Entity entity, byte substanceIndex) {
+        Map<Byte, Integer> timers = manager.getValue(entity, MilkyWay.MILK_TIMERS);
+        return timers.getOrDefault(substanceIndex, 0);
     }
 
-    // Hard-coding golden milk bucket support because they use EntityInteractSpecific instead of EntityInteract, I think?
-    @SubscribeEvent(priority = EventPriority.HIGH)
-    public static void onGoldenMilk(PlayerInteractEvent.EntityInteractSpecific event) {
-        if (ModList.get().isLoaded(MWConstants.CAVERNS_AND_CHASMS)) {
-            Player player = event.getEntity();
-            Entity target = event.getTarget();
-            if (target instanceof LivingEntity living && living.isBaby()) {return;}
-            ItemStack stack = player.getItemInHand(event.getHand());
-            if (stack.is(getCompatItem(MWConstants.CAVERNS_AND_CHASMS, MWConstants.GOLDEN_BUCKET).get())
-                    || stack.is(getCompatItem(MWConstants.CAVERNS_AND_CHASMS, MWConstants.GOLDEN_MILK_BUCKET).get())) {
-                handleBuckets(player, target, event.getHand(), MWEntityTypeTags.BUCKET_MILKABLE, MilkyWay.BUCKET_TIMER, event, MWConfig.COMMON.bucketTimer.get());
-                handleBuckets(player, target, event.getHand(), MWEntityTypeTags.WORSE_BUCKET_MILKABLE, MilkyWay.WORSE_BUCKET_TIMER, event, MWConfig.COMMON.worseBucketTimer.get());
-            }
-        }
+    private static void setMilkTimers(Entity entity, byte substanceIndex, int ticks) {
+        Map<Byte, Integer> timers = new HashMap<>(manager.getValue(entity, MilkyWay.MILK_TIMERS));
+        timers.put(substanceIndex, ticks);
+        manager.setValue(entity, MilkyWay.MILK_TIMERS, timers);
     }
 
-    private static Supplier<Item> getCompatItem(String modid, ResourceLocation item) {
-        return (ModList.get().isLoaded(modid) ? () -> ForgeRegistries.ITEMS.getValue(item) : () -> null);
+    private static Supplier<Item> getCompatItem(String fullId) {
+        String[] parts = fullId.split(":");
+        String modid = parts[0];
+        String itemID = parts[1];
+        ResourceLocation item = ResourceLocation.fromNamespaceAndPath(modid, itemID);
+        return ModList.get().isLoaded(modid) ? () -> BuiltInRegistries.ITEM.get(item) : () -> null;
     }
 }
