@@ -80,7 +80,10 @@ public class MWEvents {
             if (!ModList.get().isLoaded(itemData.modLoaded())) continue;
 
             ItemStack held = player.getItemInHand(hand);
-            if (!held.is(getCompatItem(itemData.item()).get())) continue;
+            String itemID = itemData.item();
+            if (itemID.equals("milky_way:buckets")) {
+                if (!held.is(MWItemTags.BUCKETS)) continue;
+            } else if (!held.is(getCompatItem(itemID).get())) continue;
 
             byte substance = itemData.substanceIndex();
             int milkTime = parseMilkTimers(target, substance);

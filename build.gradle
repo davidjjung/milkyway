@@ -49,8 +49,12 @@ dependencies {
     implementation("com.teamabnormals:blueprint:${project.mc_version}-${project.blueprint}")
 
     runtimeOnly "maven.modrinth:neapolitan:alzGsnWj"
-    implementation "maven.modrinth:cobblemon:eLcb8xod"
-    implementation "maven.modrinth:kotlin-for-forge:4qCjWixP"
+    runtimeOnly "maven.modrinth:windswept:4IuP7gWB"
+    runtimeOnly "maven.modrinth:caverns-and-chasms:bVK4SxKp"
+    runtimeOnly "maven.modrinth:rex9wwpz:OgmUYgeL"
+    runtimeOnly "maven.modrinth:teallib:lZTBRemW"
+    implementation "maven.modrinth:cobblemon:9IXh9584"
+    implementation "maven.modrinth:kotlin-for-forge:uhJhCT7X"
 
     compileOnly("mezz.jei:jei-${project.mc_version}-neoforge-api:${project.jei}")
     runtimeOnly("mezz.jei:jei-${project.mc_version}-neoforge:${project.jei}")

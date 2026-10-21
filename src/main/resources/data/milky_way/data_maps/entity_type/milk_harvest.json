@@ -4,7 +4,7 @@
     "minecraft:cow": {
       "items": [
         {
-          "item": "minecraft:bucket",
+          "item": "milky_way:buckets",
           "seconds": 600
         },
         {
@@ -17,7 +17,7 @@
     "minecraft:goat": {
       "items": [
         {
-          "item": "minecraft:bucket",
+          "item": "milky_way:buckets",
           "seconds": 600
         },
         {
@@ -30,7 +30,7 @@
     "minecraft:mooshroom": {
       "items": [
         {
-          "item": "minecraft:bucket",
+          "item": "milky_way:buckets",
           "seconds": 1200
         },
         {
@@ -47,7 +47,7 @@
     "environmental:yak": {
       "items": [
         {
-          "item": "minecraft:bucket",
+          "item": "milky_way:buckets",
           "seconds": 1200
         },
         {
@@ -60,7 +60,7 @@
     "buzzier_bees:moobloom": {
       "items": [
         {
-          "item": "minecraft:bucket",
+          "item": "milky_way:buckets",
           "seconds": 1200
         },
         {
@@ -73,7 +73,7 @@
     "goated:geep": {
       "items": [
         {
-          "item": "minecraft:bucket",
+          "item": "milky_way:buckets",
           "seconds": 1200
         },
         {
@@ -86,7 +86,7 @@
     "minecraft:blaze": {
       "items": [
         {
-          "item": "minecraft:bucket",
+          "item": "milky_way:buckets",
           "seconds": 600,
           "mod_loaded": "milkable_blazes"
         }
@@ -95,7 +95,7 @@
     "minecraft:sheep": {
       "items": [
         {
-          "item": "minecraft:bucket",
+          "item": "milky_way:buckets",
           "seconds": 1200,
           "mod_loaded": "milkallthemobs"
         }
@@ -104,7 +104,7 @@
     "minecraft:llama": {
       "items": [
         {
-          "item": "minecraft:bucket",
+          "item": "milky_way:buckets",
           "seconds": 1200,
           "mod_loaded": "milkallthemobs"
         }
@@ -113,7 +113,7 @@
     "minecraft:pig": {
       "items": [
         {
-          "item": "minecraft:bucket",
+          "item": "milky_way:buckets",
           "seconds": 1200,
           "mod_loaded": "milkallthemobs"
         }
@@ -122,7 +122,7 @@
     "minecraft:donkey": {
       "items": [
         {
-          "item": "minecraft:bucket",
+          "item": "milky_way:buckets",
           "seconds": 1200,
           "mod_loaded": "milkallthemobs"
         }
@@ -131,7 +131,7 @@
     "minecraft:horse": {
       "items": [
         {
-          "item": "minecraft:bucket",
+          "item": "milky_way:buckets",
           "seconds": 1200,
           "mod_loaded": "milkallthemobs"
         }
@@ -140,7 +140,7 @@
     "minecraft:mule": {
       "items": [
         {
-          "item": "minecraft:bucket",
+          "item": "milky_way:buckets",
           "seconds": 1200,
           "mod_loaded": "milkallthemobs"
         }
@@ -176,7 +176,7 @@
     "bovinesandbuttercups:moobloom": {
       "items": [
         {
-          "item": "minecraft:bucket",
+          "item": "milky_way:buckets",
           "seconds": 1200,
           "mod_loaded": "bovinesandbuttercups"
         },
@@ -190,7 +190,7 @@
     "cobblemon:pokemon": {
       "items": [
         {
-          "item": "minecraft:bucket",
+          "item": "milky_way:buckets",
           "seconds": 1200,
           "mod_loaded": "cobblemon"
         }
