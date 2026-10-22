@@ -173,6 +173,14 @@
         }
       ]
     },
+    "spawn:sea_cow": {
+      "items": [
+        {
+          "item": "milky_way:buckets",
+          "seconds": 600
+        }
+      ]
+    },
     "bovinesandbuttercups:moobloom": {
       "items": [
         {

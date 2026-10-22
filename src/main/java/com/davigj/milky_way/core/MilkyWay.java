@@ -1,5 +1,7 @@
 package com.davigj.milky_way.core;
 
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.DataResult;
 import com.teamabnormals.blueprint.common.world.storage.tracking.TrackedData;
 import com.teamabnormals.blueprint.common.world.storage.tracking.TrackedDataManager;
 import com.teamabnormals.blueprint.core.util.registry.RegistryHelper;
@@ -24,6 +26,19 @@ import static com.davigj.milky_way.core.other.MWDataMapUtil.MILK_DATA;
 public class MilkyWay {
     public static final String MOD_ID = "milky_way";
     public static final RegistryHelper REGISTRY_HELPER = new RegistryHelper(MOD_ID);
+    private static final Codec<Byte> BYTE_KEY_CODEC = Codec.STRING.comapFlatMap(
+            key -> {
+                try {
+                    return DataResult.success(Byte.parseByte(key));
+                } catch (NumberFormatException e) {
+                    return DataResult.error(() -> "Invalid byte key: " + key);
+                }
+            },
+            String::valueOf
+    );
+
+    private static final Codec<Map<Byte, Integer>> MILK_TIMERS_CODEC =
+            Codec.unboundedMap(BYTE_KEY_CODEC, Codec.INT);
 
     public static final TrackedData<Map<Byte, Integer>> MILK_TIMERS =
             TrackedData.Builder.<Map<Byte, Integer>>create(
@@ -50,8 +65,7 @@ public class MilkyWay {
                         }
                     },
                     () -> new HashMap<>(Map.of((byte) 0, 0))
-            ).build();
-
+            ).enableSaving(MILK_TIMERS_CODEC.fieldOf("MilkTimers")).build();
 
     public MilkyWay(IEventBus bus, ModContainer container) {
 
