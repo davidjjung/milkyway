@@ -53,7 +53,7 @@ dependencies {
     runtimeOnly "maven.modrinth:caverns-and-chasms:bVK4SxKp"
     runtimeOnly "maven.modrinth:rex9wwpz:OgmUYgeL"
     runtimeOnly "maven.modrinth:teallib:lZTBRemW"
-    implementation "maven.modrinth:cobblemon:9IXh9584"
+    compileOnly "maven.modrinth:cobblemon:9IXh9584"
     implementation "maven.modrinth:kotlin-for-forge:uhJhCT7X"
 
     compileOnly("mezz.jei:jei-${project.mc_version}-neoforge-api:${project.jei}")
